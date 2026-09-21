@@ -1,0 +1,3 @@
+# CODEOWNERS
+# ทุกไฟล์ใน repo นี้ต้องผ่านการ review จากเจ้าของ repo ก่อน merge
+* @niphan1000-cyber1000
