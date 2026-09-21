@@ -5,8 +5,15 @@ info:
     Studio ตัวที่สามของ CloudForge Platform — RAG (Retrieval-Augmented Generation):
     รับคำถาม, ดึงเอกสารที่เกี่ยวข้องจาก Knowledge Studio, ส่งให้ LLM ตอบพร้อมอ้างอิงแหล่งที่มา
   version: 0.1.0
+  x-owner: nova-team
+  x-domain: nova
+  x-governance-id: CFG-NOVA-001
+  contact:
+    name: CloudForge Nova Team
+    email: nova@cloudforge.example.com
   license:
     name: MIT
+    url: https://github.com/niphan1000-cyber1000/cloudforge-nova-studio/blob/main/LICENSE
 
 servers:
   - url: http://localhost:8002
@@ -16,7 +23,10 @@ paths:
   /health:
     get:
       summary: Health check
+      description: เช็คว่า service ทำงานอยู่หรือไม่ ใช้สำหรับ liveness/readiness probe
       operationId: getHealth
+      tags:
+        - health
       responses:
         "200":
           description: Service is healthy
@@ -32,7 +42,12 @@ paths:
   /query:
     post:
       summary: ถามคำถามและรับคำตอบแบบ RAG
+      description: >-
+        รับคำถามจากผู้ใช้ ดึงเอกสารที่เกี่ยวข้องจาก Knowledge Studio (semantic search)
+        แล้วส่งให้ LLM สร้างคำตอบพร้อมอ้างอิงแหล่งที่มา
       operationId: postQuery
+      tags:
+        - rag
       security:
         - bearerAuth: []
       requestBody:
