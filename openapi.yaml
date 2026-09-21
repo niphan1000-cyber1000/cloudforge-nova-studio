@@ -19,6 +19,15 @@ servers:
   - url: http://localhost:8002
     description: Local development
 
+tags:
+  - name: health
+    description: Health/liveness check endpoints
+  - name: rag
+    description: Retrieval-Augmented Generation — คำถาม-คำตอบพร้อมอ้างอิงเอกสาร
+
+security:
+  - bearerAuth: []
+
 paths:
   /health:
     get:
@@ -27,6 +36,7 @@ paths:
       operationId: getHealth
       tags:
         - health
+      security: []
       responses:
         "200":
           description: Service is healthy
