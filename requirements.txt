@@ -4,7 +4,9 @@ pydantic==2.9.2
 pydantic-settings==2.5.2
 httpx==0.27.2
 anthropic==0.34.2
-python-jose[cryptography]==3.3.0
+# Auth — shared implementation of Identity Contract v1 (RS256+JWKS, 401/403/503)
+# Pin to the frozen tag that passed Ingest/Knowledge regression tests
+cloudforge-auth-core @ git+https://github.com/CloudForge-Platform-Foundation-dev/cloudforge-auth-core.git@v1.1.0
 pytest==8.3.3
 pytest-asyncio==0.24.0
 pytest-mock==3.14.0

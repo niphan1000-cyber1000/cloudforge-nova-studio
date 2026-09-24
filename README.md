@@ -20,12 +20,24 @@ docker compose up --build
 - ต้องตั้งค่า environment variables ก่อนรัน (ดู `.env.example`):
   - `ANTHROPIC_API_KEY`
   - `KNOWLEDGE_STUDIO_URL` (ค่า default: `http://localhost:8001`)
-  - `JWT_SECRET_KEY`
+  - `AUTH_JWT_ISSUER` / `AUTH_JWT_AUDIENCE` / `AUTH_JWKS_URL`
 
 ## Auth
 
-ใช้ pattern มาตรฐานเดียวกับ Ingest Studio และ Knowledge Studio ทุกไฟล์
-(`src/auth/config.py`, `src/auth/jwt.py`, `src/auth/dependencies.py`) — ห้ามเบี่ยงเบนจาก pattern นี้
+ใช้ **cloudforge-auth-core v1.1.0** ตาม [CloudForge Identity Contract v1](../CLOUDFORGE-IDENTITY-CONTRACT-v1.md)
+
+- Algorithm: **RS256** เท่านั้น (JWKS จาก Identity Service)
+- Scope บังคับบน `/query`: `nova:query`
+- Error semantics: 401 (token ผิด) / 403 (scope ไม่พอ) / 503 (JWKS เข้าไม่ถึง)
+- Studio **ไม่ออก token เอง** และ **ไม่ implement JWT verify เอง** (Foundation gate rule)
+
+Config ที่ต้องตั้ง (ดู `.env.example`):
+
+```
+AUTH_JWT_ISSUER=https://identity.cloudforge.internal
+AUTH_JWT_AUDIENCE=cloudforge-platform
+AUTH_JWKS_URL=https://identity.cloudforge.internal/.well-known/jwks.json
+```
 
 ## เอกสารที่เกี่ยวข้อง
 

@@ -8,7 +8,7 @@ from src.llm.anthropic_provider import AnthropicProvider
 from src.rag.knowledge_client import KnowledgeStudioClient
 from src.rag.service import RAGService
 
-app = FastAPI(title="CloudForge Nova Studio", version="0.1.0")
+app = FastAPI(title="CloudForge Nova Studio", version="0.2.0")
 app.include_router(router)
 
 
