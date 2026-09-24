@@ -1,8 +1,7 @@
 """API routes ของ Nova Studio"""
 from fastapi import APIRouter, Depends
 
-from cloudforge_auth_core import Principal
-from src.auth.dependencies import get_current_user, require_nova_query
+from src.auth.dependencies import Principal, require_scope
 from src.models.schemas import QueryRequest, QueryResponse
 from src.rag.service import RAGService
 
@@ -20,17 +19,9 @@ def get_rag_service() -> RAGService:
 @router.post("/query", response_model=QueryResponse)
 async def query(
     request: QueryRequest,
-    current_user: Principal = Depends(get_current_user),
-    _: None = Depends(require_nova_query),
+    principal: Principal = Depends(require_scope("nova:query")),
     rag_service: RAGService = Depends(get_rag_service),
 ) -> QueryResponse:
-    """
-    ต้องมี scope `nova:query` (Identity Contract v1)
-
-    - token ไม่ถูกต้อง → 401
-    - token ถูกแต่ไม่มี nova:query → 403
-    - JWKS เข้าไม่ถึง → 503
-    """
     return await rag_service.answer(request.question, top_k=request.top_k)
 
 
